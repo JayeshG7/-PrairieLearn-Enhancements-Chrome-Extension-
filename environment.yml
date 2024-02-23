@@ -17,4 +17,3 @@ dependencies:
   - wheel=0.41.2
   - xz=5.4.5
   - zlib=1.2.13
-prefix: /Users/pedrocoelho/anaconda3/envs/pl_enhancements
