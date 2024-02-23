@@ -1,0 +1,37 @@
+[
+    {
+        "label": "Enum",
+        "importPath": "enum",
+        "description": "enum",
+        "isExtraImport": true,
+        "detail": "enum",
+        "documentation": {}
+    },
+    {
+        "label": "assignment",
+        "kind": 6,
+        "importPath": "main.classes.assignment",
+        "description": "main.classes.assignment",
+        "peekOfCode": "class assignment:\n    def __init__(instance, assignment_type, assignment_title):\n        instance.assignment_type = assignment_type\n        instance.assignment_title = assignment_title",
+        "detail": "main.classes.assignment",
+        "documentation": {}
+    },
+    {
+        "label": "assignment_type",
+        "kind": 6,
+        "importPath": "main.classes.assignment_type",
+        "description": "main.classes.assignment_type",
+        "peekOfCode": "class assignment_type(Enum):\n    EXAM = 1\n    HOMEWORK = 2\n    LAB = 3\n    PROJECT = 4\n    QUIZ = 5",
+        "detail": "main.classes.assignment_type",
+        "documentation": {}
+    },
+    {
+        "label": "deadline",
+        "kind": 6,
+        "importPath": "main.classes.deadline",
+        "description": "main.classes.deadline",
+        "peekOfCode": "class deadline:\n    def __init__(instance, due_date, assignment):\n        instance.due_date = due_date\n        instance.assignment = assignment",
+        "detail": "main.classes.deadline",
+        "documentation": {}
+    }
+]
