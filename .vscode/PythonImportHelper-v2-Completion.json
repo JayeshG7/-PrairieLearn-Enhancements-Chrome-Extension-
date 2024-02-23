@@ -8,6 +8,24 @@
         "documentation": {}
     },
     {
+        "label": "re",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "re",
+        "description": "re",
+        "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "subprocess",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "subprocess",
+        "description": "subprocess",
+        "detail": "subprocess",
+        "documentation": {}
+    },
+    {
         "label": "assignment",
         "kind": 6,
         "importPath": "main.classes.assignment",
@@ -32,6 +50,42 @@
         "description": "main.classes.deadline",
         "peekOfCode": "class deadline:\n    def __init__(instance, due_date, assignment):\n        instance.due_date = due_date\n        instance.assignment = assignment",
         "detail": "main.classes.deadline",
+        "documentation": {}
+    },
+    {
+        "label": "command",
+        "kind": 5,
+        "importPath": "clean_yml",
+        "description": "clean_yml",
+        "peekOfCode": "command = \"conda env export\"\nprocess = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)\nout, err = process.communicate()\n# Decode the output to string\nenv_yaml = out.decode('utf-8')\n# Use regex to remove everything after the second \"=\" for any package version specification\nsimplified_env_yaml = re.sub(r'([a-zA-Z0-9\\-_]+=[0-9a-zA-Z\\.\\_]+)=.*', r'\\1', env_yaml)\n# Write the simplified environment file\nwith open(\"environment.yml\", \"w\") as file:\n    file.write(simplified_env_yaml)",
+        "detail": "clean_yml",
+        "documentation": {}
+    },
+    {
+        "label": "process",
+        "kind": 5,
+        "importPath": "clean_yml",
+        "description": "clean_yml",
+        "peekOfCode": "process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)\nout, err = process.communicate()\n# Decode the output to string\nenv_yaml = out.decode('utf-8')\n# Use regex to remove everything after the second \"=\" for any package version specification\nsimplified_env_yaml = re.sub(r'([a-zA-Z0-9\\-_]+=[0-9a-zA-Z\\.\\_]+)=.*', r'\\1', env_yaml)\n# Write the simplified environment file\nwith open(\"environment.yml\", \"w\") as file:\n    file.write(simplified_env_yaml)",
+        "detail": "clean_yml",
+        "documentation": {}
+    },
+    {
+        "label": "env_yaml",
+        "kind": 5,
+        "importPath": "clean_yml",
+        "description": "clean_yml",
+        "peekOfCode": "env_yaml = out.decode('utf-8')\n# Use regex to remove everything after the second \"=\" for any package version specification\nsimplified_env_yaml = re.sub(r'([a-zA-Z0-9\\-_]+=[0-9a-zA-Z\\.\\_]+)=.*', r'\\1', env_yaml)\n# Write the simplified environment file\nwith open(\"environment.yml\", \"w\") as file:\n    file.write(simplified_env_yaml)",
+        "detail": "clean_yml",
+        "documentation": {}
+    },
+    {
+        "label": "simplified_env_yaml",
+        "kind": 5,
+        "importPath": "clean_yml",
+        "description": "clean_yml",
+        "peekOfCode": "simplified_env_yaml = re.sub(r'([a-zA-Z0-9\\-_]+=[0-9a-zA-Z\\.\\_]+)=.*', r'\\1', env_yaml)\n# Write the simplified environment file\nwith open(\"environment.yml\", \"w\") as file:\n    file.write(simplified_env_yaml)",
+        "detail": "clean_yml",
         "documentation": {}
     }
 ]
