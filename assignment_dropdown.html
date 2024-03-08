@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assignment Dropdown</title>
+<style>
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+  .dropdown-content a {
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  .dropdown-content a[href="#Exam"] {
+    color: blue; 
+  }
+
+  .dropdown-content a[href="#Homework"] {
+    color: green; 
+  }
+
+  .dropdown-content a[href="#Lab"] {
+    color: red; 
+  }
+
+  .dropdown-content a[href="#Project"] {
+    color: orange; 
+  }
+
+  .dropdown-content a[href="#Quiz"] {
+    color: purple; 
+  }
+
+  .dropdown-content a:hover {
+    background-color: #f1f1f1;
+  }
+</style>
+</head>
+<body>
+
+<div class="dropdown">
+  <button class="dropbtn">Class Assignments</button>
+  <div class="dropdown-content">
+    <a href="#Exam">Exam</a>
+    <a href="#Homework">Homework</a>
+    <a href="#Lab">Lab</a>
+    <a href="#Project">Project</a>
+    <a href="#Quiz">Quiz</a>
+  </div>
+</div>
+
+</body>
+</html>
