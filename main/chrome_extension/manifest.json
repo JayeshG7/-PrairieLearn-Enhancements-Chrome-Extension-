@@ -5,8 +5,15 @@
     "permissions": [
       "scripting", "activeTab"
     ],
+    "content_scripts": [
+      {
+        "matches": ["https://us.prairielearn.com/"],
+        "js": ["src/content/content.js"],
+        "run_at": "document_idle"
+      }
+    ],
     "background": {
-        "service_worker": "src/background/index.js",
+        "service_worker": "src/background/trigger.js",
         "type": "module"
     },
     "action": {}
