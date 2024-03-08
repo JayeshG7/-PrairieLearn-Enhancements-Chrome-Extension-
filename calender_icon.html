@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calender Icon</title>
+<style>
+
+    #calender-icon  {
+        width: 50px;
+        height: 50px;
+        background-color: #3482db;
+        border-radius: 40%;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+    <div id = "calender-icon" onclick="openCalender()"></div>
+
+    <script>
+        function openCalender(){
+            var calURL = 'https://workspace.google.com/products/calendar/?hl=en';
+
+            window.open(calURL, '_blank');
+        }
+    </script>
+</body>
+</html>
