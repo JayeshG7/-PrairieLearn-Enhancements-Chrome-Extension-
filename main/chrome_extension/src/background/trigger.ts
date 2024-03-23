@@ -25,3 +25,18 @@ chrome.action.onClicked.addListener((tab) => {
       chrome.tabs.sendMessage(tab.id, {action: "extractURLs"});
     }
 });
+
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+  if (message.action === "openTab") {
+    chrome.tabs.create({url: message.url, active: true}, (tab) => {
+      if (tab.id != undefined) {
+        chrome.tabs.onUpdated.addListener(function tabUpdateListener(tabId, changeInfo, updatedTab) {
+          if (tabId === tab.id && changeInfo.status === 'complete') {
+            chrome.tabs.sendMessage(tab.id, {action: "extractData"});
+            chrome.tabs.onUpdated.removeListener(tabUpdateListener);
+          }
+        });
+      }
+    });
+  }
+});

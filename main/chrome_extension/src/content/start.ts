@@ -32,11 +32,8 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
       let hrefs: string[] = [];
       hrefs = getClassURLs();
       hrefs.forEach(href => {
-        if (href != null) {
-          const classWindow = window.open(href, '_blank')
-          if (classWindow != null) {
-            classWindow.focus();
-          }
+        if (href) {
+          chrome.runtime.sendMessage({action: "openTab", url: href});
         }
       })
   }

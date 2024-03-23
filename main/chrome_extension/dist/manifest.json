@@ -3,12 +3,17 @@
     "name": "PrairieLearn Enhancements",
     "version": "1.0.0",
     "permissions": [
-      "scripting", "activeTab"
+      "scripting", "activeTab", "tabs"
     ],
     "content_scripts": [
       {
         "matches": ["https://us.prairielearn.com/"],
-        "js": ["src/content/content.js"],
+        "js": ["src/content/start.js"],
+        "run_at": "document_idle"
+      }, 
+      {
+        "matches": ["https://us.prairielearn.com/pl/course_instance/"],
+        "js": ["src/content/extract_data.js"],
         "run_at": "document_idle"
       }
     ],
