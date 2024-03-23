@@ -12,7 +12,7 @@
         "run_at": "document_idle"
       }, 
       {
-        "matches": ["https://us.prairielearn.com/pl/course_instance/"],
+        "matches": ["https://us.prairielearn.com/pl/course_instance/*"],
         "js": ["src/content/extract_data.js"],
         "run_at": "document_idle"
       }
