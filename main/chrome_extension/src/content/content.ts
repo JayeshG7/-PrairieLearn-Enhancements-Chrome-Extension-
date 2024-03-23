@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer';
+// import puppeteer from 'puppeteer';
 
 function getClassURLs() {
   console.log('getClassURLs called!');
@@ -25,39 +25,19 @@ function getClassURLs() {
   console.log('Extracted hrefs:', hrefs);
   return hrefs; // Return the array of href values
 }
-
-async function accessClassURLs(arr: string[]): Promise<string[]> {
-  console.log('accessClassURLs called!');
-  let data: string[] = [];
-    // Launch a headless browser
-  const browser = await puppeteer.launch({
-    headless: true, // Set to false if you want to see the browser GUI
-  });
-  //iterate through list of class URLs
-  arr.forEach(async href => {
-    // Open a new page (tab)
-    const page = await browser.newPage();
-    // Navigate to a URL
-    await page.goto(href);
-    // Get all relevant data and print to console
-    let assignmentData = document.querySelectorAll('tr');
-    // Convert NodeList to an array to use array methods (optional step for convenience)
-    let trArray = Array.from(assignmentData);
-    // Use map to transform each <tr> element to its innerHTML string,
-    // and then join all those strings together to get a single string representation.
-    let trString = trArray.map(tr => tr.innerHTML).join('');
-
-    data.push(trString);
-  });
-  return data;
-}
   
 chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
   if (message.action === "extractURLs") {
+      console.log("extractURLs message has been received!")
       let hrefs: string[] = [];
-      let data: string[] = [];
       hrefs = getClassURLs();
-      data = await accessClassURLs(hrefs);
-      console.log(data);
+      hrefs.forEach(href => {
+        if (href != null) {
+          const classWindow = window.open(href, '_blank')
+          if (classWindow != null) {
+            classWindow.focus();
+          }
+        }
+      })
   }
 });

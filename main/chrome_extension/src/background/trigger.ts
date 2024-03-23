@@ -19,6 +19,7 @@
 chrome.action.onClicked.addListener((tab) => {
   // Ensure there is a valid tab.id before trying to send a message to the content script
     if (tab.id != undefined) {
+      console.log("Click has been received!")
       // Send a message to extract URLs. The content script has already been injected in the 
       // webpage through the manifest.json file so no need to do it again
       chrome.tabs.sendMessage(tab.id, {action: "extractURLs"});
