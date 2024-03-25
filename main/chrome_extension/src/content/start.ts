@@ -1,5 +1,3 @@
-// import puppeteer from 'puppeteer';
-
 function getClassURLs() {
   console.log('getClassURLs called!');
   // Use querySelectorAll to find all <a> tags in the document
