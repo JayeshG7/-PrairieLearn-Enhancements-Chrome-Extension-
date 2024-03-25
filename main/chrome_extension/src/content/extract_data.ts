@@ -3,9 +3,32 @@ function getClassData() {
     console.log('getClassData called!');
 
     let tableEntries = document.querySelectorAll('tr')
+    let entriesArray = Array.from(tableEntries); // Converts NodeList to an array
 
-    console.log(tableEntries);
-    }
+    /* removes the first element becuase it's always trash that we don't care about */
+    entriesArray.shift();
+
+    /* assignment dividers are <tr> entries with only a single <th> element, whereas
+    assignment data itself is in the form of <tr> entries with <td> subelements */
+
+    entriesArray.forEach(entry => {
+        // let tableHeader = entry.querySelector('th');
+        // if (tableHeader == null) {
+        //     let tableData = entry.querySelectorAll('td');
+        //     if (tableData.length > 2) {
+        //         let dueDate = tableData[2].innerText;
+        //         console.log(dueDate);
+        //     }
+        // }
+        let tableData = entry.querySelectorAll('td');
+            if (tableData.length > 2) {
+                let dueDate = tableData[2].innerText;
+                console.log(dueDate);
+            }
+    });
+
+    //console.log(tableEntries);
+}
 
 
 chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
