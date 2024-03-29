@@ -22,6 +22,10 @@ function getClassData() {
         // }
         let tableData = entry.querySelectorAll('td');
             if (tableData.length > 2) {
+                let assignmentData = tableData[1];
+                let assignmentName = assignmentData.querySelectorAll('a');
+                let nameEntriesArray = Array.from(assignmentName);
+                console.log(nameEntriesArray[0].innerText);
                 let dueDate = tableData[2].innerText;
                 console.log(dueDate);
             }
