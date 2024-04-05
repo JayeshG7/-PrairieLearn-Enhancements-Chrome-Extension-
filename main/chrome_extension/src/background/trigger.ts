@@ -39,4 +39,24 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
       }
     });
   }
+  if(message.action === "processAssignments") {
+    console.log("ProcessAssignmnets message recieved!");
+    let closestIndices = findClosesDeadline(message.assignments);
+  }
 });
+
+function findClosesDeadline(assignments: any[]){
+  let currDate = new Date();
+  let currm = currDate.getMonth() +1;
+  let currD = currDate.getDate();
+  let curr = currm * 100 + currD;
+
+  let futureAssignments  = assignments.filter((assignment: { deadline: number; }) => assignment.deadline >= curr);
+  futureAssignments.sort((a: { deadline: number; },b: { deadline: number; }) => a.deadline - b.deadline);
+
+  let closest = futureAssignments.slice(0,5).map((assignment: any) => assignments.indexOf(assignment));
+
+  console.log("Closest Deadlines:", closest);
+  return closest;
+
+}
