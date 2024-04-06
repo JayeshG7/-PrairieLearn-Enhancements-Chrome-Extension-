@@ -18,22 +18,21 @@ function getClassData() {
             if (tableData.length > 2) {
                 let assignmentData = tableData[1];
                 let assignmentName = assignmentData.querySelector('a');
-                if (assignmentName != null) {
+                if (assignmentName != null && assignmentName != undefined) {
                     console.log(assignmentName.innerText);
                     assignmentNames.push(assignmentName.innerText);
-                } else {
-                    console.log(assignmentData.innerText);
-                    assignmentNames.push(assignmentData.innerText);
                 }
                 let dueDate = tableData[2].innerText;
-                unprocessedAssignments.push(dueDate);
-                console.log(dueDate);
+                if (dueDate != 'None ') {
+                    unprocessedAssignments.push(dueDate);
+                    console.log(dueDate);
+                }
             }
     });
 
     let processedAssignments = findMostUrgentEntries(unprocessedAssignments);
 
-    //console.log(tableEntries);
+    console.log(processedAssignments);
 }
 
 function findMostUrgentEntries(entries: string[]) {
@@ -44,7 +43,9 @@ function findMostUrgentEntries(entries: string[]) {
 
     // Add all assignments due after today to the list of structs
     for (let i = 0; i < entries.length; i++) {
+        //console.log(entries[i]);
         const date = parseDate(entries[i]);
+        //console.log(date);
         if (date > now) {
             assignments.push({ index: i, date });
         }
@@ -59,26 +60,30 @@ function findMostUrgentEntries(entries: string[]) {
 
 // date is a string in the format '100% until 23:59, Mon, Apr 8'
 function parseDate(date: string) {
-    const monthToNumber: { [key: string]: number } = {
-        Jan: 0,
-        Feb: 1,
-        Mar: 2,
-        Apr: 3,
-        May: 4,
-        Jun: 5,
-        Jul: 6,
-        Aug: 7,
-        Sep: 8,
-        Oct: 9,
-        Nov: 10,
-        Dec: 11,
-        };
+    const monthToNumber: { [key: string]: string } = {
+        Jan: '01',
+        Feb: '02',
+        Mar: '03',
+        Apr: '04',
+        May: '05',
+        Jun: '06',
+        Jul: '07',
+        Aug: '08',
+        Sep: '09',
+        Oct: '10',
+        Nov: '11',
+        Dec: '12'
+    };
     // get the separate components of the due date
     // get rid of commas with replace, then split along spaces
     const parts = date.replace(/,/g, '').split(' ');
+    if (parts[5].length == 1) {
+        parts[5] = "0" + parts[5];
+    }
     const currentYear = new Date().getFullYear();
+    console.log(`${currentYear}-${monthToNumber[parts[4]]}-${parts[5]}T${parts[2]}:00`);
     // Convert to format "HH:MM DDD MMM D YYYY" after removing commas
-    return new Date(`${currentYear}-${monthToNumber[parts[4]]}-${parts[5]}T0${parts[2]}:00`);
+    return new Date(`${currentYear}-${monthToNumber[parts[4]]}-${parts[5]}T${parts[2]}:00`);
 }
 
 
