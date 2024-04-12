@@ -10,28 +10,80 @@ function getClassData() {
 
     /* assignment dividers are <tr> entries with only a single <th> element, whereas
     assignment data itself is in the form of <tr> entries with <td> subelements */
+    let unprocessedAssignments:string[] = [];
+    let assignmentNames = [];
 
     entriesArray.forEach(entry => {
-        // let tableHeader = entry.querySelector('th');
-        // if (tableHeader == null) {
-        //     let tableData = entry.querySelectorAll('td');
-        //     if (tableData.length > 2) {
-        //         let dueDate = tableData[2].innerText;
-        //         console.log(dueDate);
-        //     }
-        // }
         let tableData = entry.querySelectorAll('td');
             if (tableData.length > 2) {
                 let assignmentData = tableData[1];
-                let assignmentName = assignmentData.querySelectorAll('a');
-                let nameEntriesArray = Array.from(assignmentName);
-                console.log(nameEntriesArray[0].innerText);
+                let assignmentName = assignmentData.querySelector('a');
+                if (assignmentName != null && assignmentName != undefined) {
+                    console.log(assignmentName.innerText);
+                    assignmentNames.push(assignmentName.innerText);
+                }
                 let dueDate = tableData[2].innerText;
-                console.log(dueDate);
+                if (dueDate != 'None ') {
+                    unprocessedAssignments.push(dueDate);
+                    console.log(dueDate);
+                }
             }
     });
 
-    //console.log(tableEntries);
+    let processedAssignments = findMostUrgentEntries(unprocessedAssignments);
+
+    console.log(processedAssignments);
+}
+
+function findMostUrgentEntries(entries: string[]) {
+    // Current time
+    const now = new Date();
+    // A list of structs containing a number (index) and a Date object
+    const assignments: { index: number; date: Date }[] = [];
+
+    // Add all assignments due after today to the list of structs
+    for (let i = 0; i < entries.length; i++) {
+        //console.log(entries[i]);
+        const date = parseDate(entries[i]);
+        //console.log(date);
+        if (date > now) {
+            assignments.push({ index: i, date });
+        }
+    }
+
+    // Sort the list by which assignments have the 'smallest' date and slice to get 5 most recent ones
+    const sortedAssignments = assignments.sort((a, b) => a.date.getTime() - b.date.getTime()).slice(0, 5);
+
+    // Return 
+    return sortedAssignments;
+}
+
+// date is a string in the format '100% until 23:59, Mon, Apr 8'
+function parseDate(date: string) {
+    const monthToNumber: { [key: string]: string } = {
+        Jan: '01',
+        Feb: '02',
+        Mar: '03',
+        Apr: '04',
+        May: '05',
+        Jun: '06',
+        Jul: '07',
+        Aug: '08',
+        Sep: '09',
+        Oct: '10',
+        Nov: '11',
+        Dec: '12'
+    };
+    // get the separate components of the due date
+    // get rid of commas with replace, then split along spaces
+    const parts = date.replace(/,/g, '').split(' ');
+    if (parts[5].length == 1) {
+        parts[5] = "0" + parts[5];
+    }
+    const currentYear = new Date().getFullYear();
+    console.log(`${currentYear}-${monthToNumber[parts[4]]}-${parts[5]}T${parts[2]}:00`);
+    // Convert to format "HH:MM DDD MMM D YYYY" after removing commas
+    return new Date(`${currentYear}-${monthToNumber[parts[4]]}-${parts[5]}T${parts[2]}:00`);
 }
 
 
