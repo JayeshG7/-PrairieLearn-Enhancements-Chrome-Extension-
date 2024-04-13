@@ -1,1 +1,0 @@
-The point of this README is to generally explain how the Chrome extension works.
