@@ -54,10 +54,17 @@ function showAssignments(assignment_class: string, text: string, urls_list: any[
     let bulletPoint = document.createElement('li');
     let bulletPointText = document.createElement('a');
     /* sets URL pointing to the assignment as well as inner text */
+    let text = assignment.split(' - ');
+    let name = text[0];
+    let info = text[1];
+    let grade = text[2];
+    bulletPointText.textContent = name;
     bulletPointText.setAttribute('href', urls_list[counter]);
-    bulletPointText.textContent = assignment;
     /* appends the text to the bullet point, and the bullet point to the unordered list */
     bulletPoint.appendChild(bulletPointText);
+    bulletPoint.appendChild(document.createTextNode(' - ' + info));
+    bulletPoint.appendChild(document.createTextNode(' - current grade: [' + grade + ']'));
+
     list.appendChild(bulletPoint);
     counter += 1;
   });
@@ -121,11 +128,12 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
     for (let i = 0; i < (message.names).length; i++) {
       let assignment_name = message.names[i];
       let assignment_due_date = message.due_dates[i];
+      let assignment_grade = message.grades[i];
       /* Sets up the dictionary entry associated with that particular class*/
         if (dict[message.class] == undefined) {
-          dict[message.class] = `${assignment_name} - ${assignment_due_date}\n`;
+          dict[message.class] = `${assignment_name} - ${assignment_due_date} - ${assignment_grade}\n`;
         } else {
-          dict[message.class] += `${assignment_name} - ${assignment_due_date}\n`;
+          dict[message.class] +=  `${assignment_name} - ${assignment_due_date} - ${assignment_grade}\n`;
         }
     }
     /* Calls showAssignments function for the class that was just added. */

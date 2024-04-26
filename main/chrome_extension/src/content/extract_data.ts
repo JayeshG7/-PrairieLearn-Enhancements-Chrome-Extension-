@@ -23,6 +23,7 @@ function getClassData(class_name: string) {
 
     /* Sets up arrays that contain relevant assignment data. These will later be passed
     to the base page content script through a message */
+    let grades: string[] = [];
     let due_dates: string[] = [];
     let names: string[] = [];
     let urls: string[] = [];
@@ -36,6 +37,17 @@ function getClassData(class_name: string) {
             if (data.length > 2) {
                 let name_with_url = (data[1]).querySelector('a');
                 let due_date = data[2].innerText;
+                let grade = 'Not found';
+                let grade_progress_bar = (data[3].getElementsByClassName('progress-bar bg-success'));
+                if (grade_progress_bar.length > 0) {
+                    let unprocessed_width = grade_progress_bar[0].getAttribute('style')
+                    if (unprocessed_width != null) {
+                        grade = unprocessed_width.split(' ')[1];
+                    }
+                } else {
+                    grade = 'Not started'
+                }
+                // console.log(grade);
                 /* perform validation checks */
                 if (name_with_url != null && name_with_url != undefined && due_date != 'None ' && due_date != 'Assessment closed. ') {
                     let url = name_with_url.getAttribute('href');
@@ -45,6 +57,7 @@ function getClassData(class_name: string) {
                         urls.push(url); 
                         due_dates.push(due_date);
                         names.push(name);
+                        grades.push(grade);
                     }
                     /* function logging */
                     // console.log(name);
@@ -60,12 +73,14 @@ function getClassData(class_name: string) {
     let top_names: any[] = [];
     let top_due_dates: any[] = [];
     let top_urls: any[] = [];
+    let top_grades: any[] = [];
 
     /* Uses the indices to recover the names, due dates, and URLs of each assignment */
     most_urgent_entries.forEach(entry => {
         top_names.push(names[entry.index]);
         top_due_dates.push(due_dates[entry.index]);
         top_urls.push(urls[entry.index]);
+        top_grades.push(grades[entry.index]);
     });
     
     // console.log("Sending listAssignment message!");
@@ -73,7 +88,8 @@ function getClassData(class_name: string) {
                                 class: class_name, 
                                 names: top_names, 
                                 due_dates: top_due_dates,
-                                urls: top_urls});
+                                urls: top_urls,
+                                grades: top_grades});
 }
 
 /* Finds most urgent entries from based on their due date*/
