@@ -1,10 +1,90 @@
 [
     {
+        "label": "api.assignment_type",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "api.assignment_type",
+        "description": "api.assignment_type",
+        "detail": "api.assignment_type",
+        "documentation": {}
+    },
+    {
         "label": "Enum",
         "importPath": "enum",
         "description": "enum",
         "isExtraImport": true,
         "detail": "enum",
+        "documentation": {}
+    },
+    {
+        "label": "Enum",
+        "importPath": "enum",
+        "description": "enum",
+        "isExtraImport": true,
+        "detail": "enum",
+        "documentation": {}
+    },
+    {
+        "label": "unittest",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "unittest",
+        "description": "unittest",
+        "detail": "unittest",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "api.assignment",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "api.assignment",
+        "description": "api.assignment",
+        "detail": "api.assignment",
+        "documentation": {}
+    },
+    {
+        "label": "api.deadline",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "api.deadline",
+        "description": "api.deadline",
+        "detail": "api.deadline",
+        "documentation": {}
+    },
+    {
+        "label": "assignment",
+        "kind": 6,
+        "importPath": "api.assignment",
+        "description": "api.assignment",
+        "peekOfCode": "class assignment:\n    def __init__(instance, assignment_type, assignment_title):\n        instance.assignment_type = at.assignment_type(assignment_type).name\n        instance.assignment_title = assignment_title\n        instance = assignment\n    def is_equal(self, instance):\n       if self.assignment_title == instance.assignment_title and self.assignment_type == instance.assignment_type:\n           return True\n       else:\n           return False",
+        "detail": "api.assignment",
+        "documentation": {}
+    },
+    {
+        "label": "assignment_type",
+        "kind": 6,
+        "importPath": "api.assignment_type",
+        "description": "api.assignment_type",
+        "peekOfCode": "class assignment_type(Enum):\n    NONE = -1\n    EXAM = 1\n    HOMEWORK = 2\n    LAB = 3\n    PROJECT = 4\n    QUIZ = 5",
+        "detail": "api.assignment_type",
+        "documentation": {}
+    },
+    {
+        "label": "deadline",
+        "kind": 6,
+        "importPath": "api.deadline",
+        "description": "api.deadline",
+        "peekOfCode": "class deadline:\n    def __init__(instance, due_date, assignment):\n        instance.due_date = due_date\n        instance.assignment = assignment",
+        "detail": "api.deadline",
         "documentation": {}
     },
     {
@@ -32,6 +112,42 @@
         "description": "main.classes.deadline",
         "peekOfCode": "class deadline:\n    def __init__(instance, due_date, assignment):\n        instance.due_date = due_date\n        instance.assignment = assignment",
         "detail": "main.classes.deadline",
+        "documentation": {}
+    },
+    {
+        "label": "assignment_test_case",
+        "kind": 6,
+        "importPath": "main.tests.test_assignment",
+        "description": "main.tests.test_assignment",
+        "peekOfCode": "class assignment_test_case(unittest.TestCase):\n    def test_assignment_init(self):\n        assignment_result = Assignment.assignment(2, \"Homework 1\")\n        self.assertEqual(assignment_result.assignment_type, \"HOMEWORK\")\n        self.assertEqual(assignment_result.assignment_title, \"Homework 1\")\n    def test_is_equal(self):\n        first_assignment = Assignment.assignment(4, \"CS 222 Project\")\n        second_assignment = Assignment.assignment(4, \"CS 222 Project\")\n        self.assertTrue(Assignment.assignment.is_equal(first_assignment, second_assignment))",
+        "detail": "main.tests.test_assignment",
+        "documentation": {}
+    },
+    {
+        "label": "deadline_test_case",
+        "kind": 6,
+        "importPath": "main.tests.test_deadline",
+        "description": "main.tests.test_deadline",
+        "peekOfCode": "class deadline_test_case(unittest.TestCase):\n    def test_deadline_init(self):\n        deadline_result = Deadline.deadline(\"09/27/2023\", Assignment.assignment(5, \"Quiz 1\"))\n        self.assertEqual(deadline_result.due_date, \"09/27/2023\")\n        self.assertTrue(Assignment.assignment.is_equal(deadline_result.assignment, Assignment.assignment(5, \"Quiz 1\")))",
+        "detail": "main.tests.test_deadline",
+        "documentation": {}
+    },
+    {
+        "label": "assignment_test_case",
+        "kind": 6,
+        "importPath": "tests.test_assignment",
+        "description": "tests.test_assignment",
+        "peekOfCode": "class assignment_test_case(unittest.TestCase):\n    def test_assignment_init(self):\n        assignment_result = Assignment.assignment(2, \"Homework 1\")\n        self.assertEqual(assignment_result.assignment_type, \"HOMEWORK\")\n        self.assertEqual(assignment_result.assignment_title, \"Homework 1\")\n    def test_is_equal(self):\n        first_assignment = Assignment.assignment(4, \"CS 222 Project\")\n        second_assignment = Assignment.assignment(4, \"CS 222 Project\")\n        self.assertTrue(Assignment.assignment.is_equal(first_assignment, second_assignment))",
+        "detail": "tests.test_assignment",
+        "documentation": {}
+    },
+    {
+        "label": "deadline_test_case",
+        "kind": 6,
+        "importPath": "tests.test_deadline",
+        "description": "tests.test_deadline",
+        "peekOfCode": "class deadline_test_case(unittest.TestCase):\n    def test_deadline_init(self):\n        deadline_result = Deadline.deadline(\"09/27/2023\", Assignment.assignment(5, \"Quiz 1\"))\n        self.assertEqual(deadline_result.due_date, \"09/27/2023\")\n        self.assertTrue(Assignment.assignment.is_equal(deadline_result.assignment, Assignment.assignment(5, \"Quiz 1\")))",
+        "detail": "tests.test_deadline",
         "documentation": {}
     }
 ]
