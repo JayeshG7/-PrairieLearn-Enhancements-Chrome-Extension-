@@ -33,8 +33,5 @@
     "@types/chrome": "^0.0.261",
     "@types/puppeteer": "^7.0.4",
     "typescript": "^5.3.3"
-  },
-  "dependencies": {
-    "puppeteer": "^22.5.0"
   }
 }

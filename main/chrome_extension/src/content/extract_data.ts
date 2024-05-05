@@ -1,52 +1,112 @@
+/* --------------------------------------------------------------------- */
+/* ------------------ CONTENT SCRIPT (class pages) --------------------- */
+/* --------------------------------------------------------------------- */
+/* This content script is injected into pages corresponding to 
+each class the student is signed up for once these pages have been loaded.
+This script performs functions such as reading assignment data, parsing it,
+and then resending it to the main page where it can be displayed */
 
-function getClassData() {
-    console.log('getClassData called!');
 
-    let tableEntries = document.querySelectorAll('tr')
-    let entriesArray = Array.from(tableEntries); // Converts NodeList to an array
+/* Extracts data for each class, sending data wrapped in a "listAssignments" message */
+function getClassData(class_name: string) {
+    /* function logging */
+    // console.log('getClassData called!'); 
+    // console.log(class_name);
 
-    /* removes the first element becuase it's always trash that we don't care about */
-    entriesArray.shift();
+    /* Selects HTML elements that contain assignment data from the page's DOM */
+    let table_entries = document.querySelectorAll('tr')
+    /* Converts NodeList to an array, allowing us to perform convenient array methods */
+    let entries = Array.from(table_entries); 
 
-    /* assignment dividers are <tr> entries with only a single <th> element, whereas
-    assignment data itself is in the form of <tr> entries with <td> subelements */
-    let unprocessedAssignments:string[] = [];
-    let assignmentNames = [];
+    /* Removes the first element becuase it's always trash */
+    entries.shift();
 
-    entriesArray.forEach(entry => {
-        let tableData = entry.querySelectorAll('td');
-            if (tableData.length > 2) {
-                let assignmentData = tableData[1];
-                let assignmentName = assignmentData.querySelector('a');
-                if (assignmentName != null && assignmentName != undefined) {
-                    console.log(assignmentName.innerText);
-                    assignmentNames.push(assignmentName.innerText);
+    /* Sets up arrays that contain relevant assignment data. These will later be passed
+    to the base page content script through a message */
+    let grades: string[] = [];
+    let due_dates: string[] = [];
+    let names: string[] = [];
+    let urls: string[] = [];
+    
+    /* The table entries containing the assignment data itself are <tr> entries with <td> subelements, whereas
+    irrelevant table entries do not follow this pattern.  */
+    /* This pattern is what we will use to filter out relevant entries. */
+    entries.forEach(entry => {
+        let data = entry.querySelectorAll('td');
+            /* ensure the assignment contains enough data to extract what we need */
+            if (data.length > 2) {
+                let name_with_url = (data[1]).querySelector('a');
+                let due_date = data[2].innerText;
+                let grade = 'Not found';
+                let grade_progress_bar = (data[3].getElementsByClassName('progress-bar bg-success'));
+                if (grade_progress_bar.length > 0) {
+                    let unprocessed_width = grade_progress_bar[0].getAttribute('style')
+                    if (unprocessed_width != null) {
+                        grade = unprocessed_width.split(' ')[1];
+                    }
+                } else {
+                    grade = 'Not started'
                 }
-                let dueDate = tableData[2].innerText;
-                if (dueDate != 'None ') {
-                    unprocessedAssignments.push(dueDate);
-                    console.log(dueDate);
+                // console.log(grade);
+                /* perform validation checks */
+                if (name_with_url != null && name_with_url != undefined && due_date != 'None ' && due_date != 'Assessment closed. ') {
+                    let url = name_with_url.getAttribute('href');
+                    let name = name_with_url.innerText;
+                    /* perform a further validation check */
+                    if (url != null) { 
+                        urls.push(url); 
+                        due_dates.push(due_date);
+                        names.push(name);
+                        grades.push(grade);
+                    }
+                    /* function logging */
+                    // console.log(name);
+                    // console.log(due_date);
+                    // console.log(url);
                 }
             }
     });
 
-    let processedAssignments = findMostUrgentEntries(unprocessedAssignments);
+    /* Gets most urgent entries (returns their due dates and indices) */
+    let most_urgent_entries = findMostUrgentEntries(due_dates);
 
-    console.log(processedAssignments);
+    let top_names: any[] = [];
+    let top_due_dates: any[] = [];
+    let top_urls: any[] = [];
+    let top_grades: any[] = [];
+
+    /* Uses the indices to recover the names, due dates, and URLs of each assignment */
+    most_urgent_entries.forEach(entry => {
+        top_names.push(names[entry.index]);
+        top_due_dates.push(due_dates[entry.index]);
+        top_urls.push(urls[entry.index]);
+        top_grades.push(grades[entry.index]);
+    });
+    
+    // console.log("Sending listAssignment message!");
+    chrome.runtime.sendMessage({action: "listAssignment", 
+                                class: class_name, 
+                                names: top_names, 
+                                due_dates: top_due_dates,
+                                urls: top_urls,
+                                grades: top_grades});
 }
 
+/* Finds most urgent entries from based on their due date*/
 function findMostUrgentEntries(entries: string[]) {
     // Current time
     const now = new Date();
-    // A list of structs containing a number (index) and a Date object
+    // A list of structs, each containing a number (represents the index) and a Date object
     const assignments: { index: number; date: Date }[] = [];
 
-    // Add all assignments due after today to the list of structs
     for (let i = 0; i < entries.length; i++) {
-        //console.log(entries[i]);
+        /* Parse the due date into the correct format for sorting */
         const date = parseDate(entries[i]);
+        /* Function logging */
+        //console.log(entries[i]);
         //console.log(date);
         if (date > now) {
+            // Add all assignments due after today to the list of structs
             assignments.push({ index: i, date });
         }
     }
@@ -54,13 +114,14 @@ function findMostUrgentEntries(entries: string[]) {
     // Sort the list by which assignments have the 'smallest' date and slice to get 5 most recent ones
     const sortedAssignments = assignments.sort((a, b) => a.date.getTime() - b.date.getTime()).slice(0, 5);
 
-    // Return 
     return sortedAssignments;
 }
 
-// date is a string in the format '100% until 23:59, Mon, Apr 8'
+// The date is a string in the format '100% until 23:59, Mon, Apr 8'
+// This function takes such a string and returns one in the format "HH:MM DDD MMM D YYYY"
 function parseDate(date: string) {
-    const monthToNumber: { [key: string]: string } = {
+    /* dictionary used for month translation*/
+    const month_name_to_number: { [key: string]: string } = {
         Jan: '01',
         Feb: '02',
         Mar: '03',
@@ -74,25 +135,26 @@ function parseDate(date: string) {
         Nov: '11',
         Dec: '12'
     };
-    // get the separate components of the due date
+    // get a list of the separate components of the due date
     // get rid of commas with replace, then split along spaces
     const parts = date.replace(/,/g, '').split(' ');
+    // if the day consists of a single digit, append a 0 to the beginning
     if (parts[5].length == 1) {
         parts[5] = "0" + parts[5];
     }
+    // get current year as assignment due date (might not always be accurate! but uh no other way to get it)
     const currentYear = new Date().getFullYear();
-    console.log(`${currentYear}-${monthToNumber[parts[4]]}-${parts[5]}T${parts[2]}:00`);
-    // Convert to format "HH:MM DDD MMM D YYYY" after removing commas
-    return new Date(`${currentYear}-${monthToNumber[parts[4]]}-${parts[5]}T${parts[2]}:00`);
+    /* function logging */
+    // console.log(`${currentYear}-${month_name_to_number[parts[4]]}-${parts[5]}T${parts[2]}:00`);
+    // Convert to format "HH:MM DDD MMM D YYYY" after removing commas, and return
+    return new Date(`${currentYear}-${month_name_to_number[parts[4]]}-${parts[5]}T${parts[2]}:00`);
 }
 
-
+/* Sets up listener to extract data and close current tab once extraction is complete */
 chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
     if (message.action === "extractData") {
         console.log("extractData message has been received!")
     }
-    getClassData();
-    /* write code to extract data with <tr> here, and then send the processed data back as a mesasge */
-    /* once the message is sent, send another message to close the tab */
-    /* then write a listener function in start.ts to receive that message and process it */
+    getClassData(message.className);
+    chrome.runtime.sendMessage({action: "closeCurrentTab"});
 });
