@@ -26,6 +26,6 @@ To use the extension from the source code, follow the steps below:
 - **Pedro Coelho**: Responsible for writing the Typescript code for the application
 - **Bella Cruz**: 
 - **Ansh Tomar**: 
-- **Jayesh Gosh**: 
+- **Jayesh Ghosh**: Responsible for HTML code and wokring together with the team to complete project.
 
 
