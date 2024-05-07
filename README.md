@@ -24,7 +24,7 @@ To use the extension from the source code, follow the steps below:
 # Developers
 
 - **Pedro Coelho**: Responsible for writing the Typescript code for the application
-- **Bella Cruz**: 
+- **Bella Cruz**: Responsible for developing project APIs and reviewing Typescript and HTML code.
 - **Ansh Tomar**: Responsible for assisting with writing HTML and typescript code
 - **Jayesh Ghosh**: Responsible for HTML code and wokring together with the team to complete project.
 
