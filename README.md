@@ -21,11 +21,30 @@ To use the extension from the source code, follow the steps below:
 # Technical Architecture
 ![Technical Architecture Diagram](./Technical%20Architecture%20for%20PL%20Chrome%20Extension%20(1).png)
 
-# Developers
+# Team
 
-- **Pedro Coelho**: Responsible for writing the Typescript code for the application
-- **Bella Cruz**: Responsible for developing project APIs and reviewing Typescript and HTML code.
-- **Ansh Tomar**: Responsible for assisting with writing HTML and typescript code
-- **Jayesh Ghosh**: Responsible for HTML code and wokring together with the team to complete project.
+- **Jayesh Ghosh**: Project Lead & Full Stack Developer
+  - Spearheaded the project vision and user experience design
+  - Managed product roadmap and feature prioritization
+  - Led the development team and coordinated cross-functional efforts
+  - Designed and implemented the user interface
+  - Developed core TypeScript functionality for data extraction and processing
+  - Implemented background service worker and content script logic
+  - Ensured timely delivery and quality standards
+
+- **Pedro Coelho**: Lead Developer
+  - Implemented core TypeScript functionality
+  - Developed the extension's data processing logic
+
+- **Bella Cruz**: API Developer
+  - Built and maintained project APIs
+  - Conducted code reviews and quality assurance
+
+- **Ansh Tomar**: Frontend Developer
+  - Assisted with UI implementation
+  - Contributed to TypeScript development
+
+# Acknowledgments
+Special thanks to the entire team for their dedication and hard work in bringing this project to life. The success of PrairieLearn Enhancements is a testament to the power of collaborative development and user-centric design.
 
 
